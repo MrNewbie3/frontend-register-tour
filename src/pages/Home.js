@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import axios from "axios";
-import WorkoutDetails from "../components/Workout_Details";
 import WorkoutForm from "../components/Workouts_Form";
 import { useWorkoutContext } from "../hooks/useWorkout";
+import { Toaster } from "react-hot-toast";
 
 const Home = () => {
   const { workouts, dispatch } = useWorkoutContext();
@@ -16,12 +16,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="workouts">
-        {workouts &&
-          workouts.map((workouts) => {
-            return <WorkoutDetails key={workouts._id} workout={workouts} />;
-          })}
-      </div>
+      <Toaster />
       <WorkoutForm />
     </div>
   );

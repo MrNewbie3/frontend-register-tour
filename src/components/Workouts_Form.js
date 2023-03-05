@@ -2,36 +2,40 @@ import { useState } from "react";
 import { useWorkoutContext } from "../hooks/useWorkout";
 
 import axios from "axios";
+import { toast } from "react-hot-toast";
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutContext();
   const [title, settitle] = useState("");
-  const [load, setload] = useState("");
-  const [reps, setreps] = useState("");
+  const [location, setlocation] = useState("");
+  const [price, setprice] = useState("");
   const [error, seterror] = useState(null);
   const [emptyFields, setEmptyFields] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const workout = { title, load, reps };
+    const workout = { title, location, price };
     await axios
       .post("http://localhost:4000/api/workouts", workout, { headers: { "Content-Type": "application/json" } })
       .then((result) => {
         dispatch({ type: "CREATE_WORKOUT", payload: result.data });
         setEmptyFields("");
+        toast.success("Success Register");
+        seterror();
       })
       .catch((err) => {
         seterror(err.response.data.error);
         setEmptyFields(err.response.data.emptyFields);
+        toast.error("Failed to register, try again");
       })
       .finally(() => {
-        setload("");
-        setreps("");
+        setlocation("");
+        setprice("");
         settitle("");
       });
   };
   return (
-    <form class="create" onSubmit={handleSubmit}>
-      <h3>Add a New Workout</h3>
-      <label for="">Exercise title</label>
+    <form class="create w-full " onSubmit={handleSubmit}>
+      <h3>Register a tour</h3>
+      <label for="">Tour Name</label>
       <input
         type="text"
         value={title}
@@ -40,25 +44,25 @@ const WorkoutForm = () => {
         }}
         className={emptyFields.includes("title") ? "error" : ""}
       />
-      <label for="">Load in kg</label>
+      <label for="">Location</label>
+      <input
+        type="text"
+        value={location}
+        onChange={(e) => {
+          setlocation(e.target.value);
+        }}
+        className={emptyFields.includes("location") ? "error" : ""}
+      />
+      <label for="">Price</label>
       <input
         type="number"
-        value={load}
+        value={price}
         onChange={(e) => {
-          setload(e.target.value);
+          setprice(e.target.value);
         }}
-        className={emptyFields.includes("load") ? "error" : ""}
+        className={emptyFields.includes("price") ? "error" : ""}
       />
-      <label for="">Reps</label>
-      <input
-        type="number"
-        value={reps}
-        onChange={(e) => {
-          setreps(e.target.value);
-        }}
-        className={emptyFields.includes("reps") ? "error" : ""}
-      />
-      <button>Add Workout</button>
+      <button className="">Add Workout</button>
       {error && <div className="error">{error}</div>}
     </form>
   );
