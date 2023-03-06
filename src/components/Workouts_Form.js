@@ -14,7 +14,7 @@ const WorkoutForm = () => {
     e.preventDefault();
     const workout = { title, location, price };
     await axios
-      .post("http://localhost:4000/api/workouts", workout, { headers: { "Content-Type": "application/json" } })
+      .post("https://register-tour-api.vercel.app/api/workouts", workout, { headers: { "Content-Type": "application/json" } })
       .then((result) => {
         dispatch({ type: "CREATE_WORKOUT", payload: result.data });
         setEmptyFields("");
