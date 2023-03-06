@@ -62,7 +62,7 @@ const WorkoutForm = () => {
         }}
         className={emptyFields.includes("price") ? "error" : ""}
       />
-      <button className="">Add Workout</button>
+      <button className="">Register Tour</button>
       {error && <div className="error">{error}</div>}
     </form>
   );
